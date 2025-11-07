@@ -3,7 +3,7 @@ import random
 from stockfish import Stockfish
 
 class ChessGame:
-    def __init__(self, stockfish_path="C:/Users/steph/Downloads/stockfish-windows-x86-64-avx2/stockfish/stockfish-windows-x86-64-avx2.exe", skill_level=10):
+    def __init__(self, stockfish_path, skill_level=10):
         self.board = chess.Board()
         self.skill_level = skill_level
         self.engine_color = random.choice([chess.WHITE, chess.BLACK])

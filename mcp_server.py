@@ -1,10 +1,11 @@
+import argparse
 from fastmcp import FastMCP
 from chess_logic import ChessGame
 
 mcp = FastMCP("chess")
 
-# Global game state
-game = ChessGame(skill_level=10)
+# Global game state will be initialized in the main block
+game = None
 
 @mcp.tool
 def get_board_state() -> str:
@@ -55,7 +56,9 @@ def reset_game(skill_level: int = 10) -> str:
     Returns the initial board state.
     """
     global game
-    game = ChessGame(skill_level=skill_level)
+    # The stockfish path is now part of the game instance
+    stockfish_path = game.stockfish.path
+    game = ChessGame(stockfish_path=stockfish_path, skill_level=skill_level)
     initial_state = game.get_board_state()
     initial_md = game.get_board_markdown()
     engine_color = "White" if game.engine_color == 1 else "Black"
@@ -64,4 +67,9 @@ def reset_game(skill_level: int = 10) -> str:
     return f"Game reset with skill level {skill_level}. Engine is playing as {engine_color}.\n\n**Initial board:**\nFEN: `{initial_state['fen']}`\n{initial_md}\n\nMoves: {moves_str}"
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run the Chess MCP server.")
+    parser.add_argument("--stockfish-path", required=True, help="Path to the Stockfish executable.")
+    args = parser.parse_args()
+
+    game = ChessGame(stockfish_path=args.stockfish_path, skill_level=10)
     mcp.run()

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "chess": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--",
+        "python",
+        "c:/path/to/your/StockfishMcp/mcp_server.py",
+        "--stockfish-path",
+        "c:/path/to/your/stockfish/stockfish.exe"
+      ],
+      "disabled": false,
+      "alwaysAllow": ["make_move"],
+      "disabledTools": []
+    }
+  }
+}
