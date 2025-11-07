@@ -28,7 +28,11 @@ This project implements a simple MCP (Model Context Protocol) server that allows
     You need to download the Stockfish engine separately. You can find it on the [official Stockfish website](https://stockfishchess.org/download/).
 
 4.  **Configure the MCP Server:**
-    You need to configure your MCP client to run the server and pass the path to your Stockfish executable as a command-line argument. See `mcp_settings.example.json` for a full example. You will need to copy it to your MCP settings directory and edit the paths to match your system.
+    To use this server, you must add an entry for it in your global `mcp_settings.json` file. This file tells your MCP client how to launch the server.
+
+    An example configuration is provided in `mcp_settings.example.json`. You should copy this configuration into your `mcp_settings.json` file and update the following paths:
+    - The path to the `mcp_server.py` script in this project.
+    - The path to your downloaded Stockfish executable for the `--stockfish-path` argument.
 
 ## Usage
 
