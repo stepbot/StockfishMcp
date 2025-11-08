@@ -38,6 +38,10 @@ This project implements a simple MCP (Model Context Protocol) server that allows
 
 The server is managed by your MCP client and will be launched using `uv`. `uv` will automatically handle the virtual environment and dependencies from `requirements.txt`. The MCP client will pass the `--stockfish-path` argument to the server on startup.
 
+## Example
+
+An example of a game played against the Stockfish engine can be found in [`exampleGame.md`](./exampleGame.md).
+
 ## Available Tools
 
 - `get_board_state()`: Get the current board state.
