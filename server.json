@@ -1,0 +1,16 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.stepbot/stockfish-mcp",
+  "title": "Stockfish MCP",
+  "description": "An MCP server for playing chess against Stockfish.",
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/stepbot/stockfish-mcp:latest",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
