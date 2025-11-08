@@ -21,7 +21,7 @@ COPY --from=stockfish_builder /app/stockfish/stockfish-ubuntu-x86-64-avx2 /usr/l
 COPY . .
 
 # Install Python dependencies
-RUN pip install uv && uv pip install --no-cache-dir -r requirements.txt
+RUN pip install uv && uv pip install --system --no-cache-dir -r requirements.txt
 
 
 # Add MCP server name label
