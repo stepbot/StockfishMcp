@@ -3,11 +3,11 @@
   "name": "io.github.stepbot/stockfish-mcp",
   "title": "Stockfish MCP",
   "description": "An MCP server for playing chess against Stockfish.",
-  "version": "0.1.0",
+  "version": "__VERSION__",
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/stepbot/stockfish-mcp:latest",
+      "identifier": "ghcr.io/stepbot/stockfish-mcp:__VERSION__",
       "transport": {
         "type": "stdio"
       }
