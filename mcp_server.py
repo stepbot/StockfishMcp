@@ -57,7 +57,7 @@ def reset_game(skill_level: int = 10) -> str:
     """
     global game
     # The stockfish path is now part of the game instance
-    stockfish_path = game.stockfish.path
+    stockfish_path = game.stockfish_path
     game = ChessGame(stockfish_path=stockfish_path, skill_level=skill_level)
     initial_state = game.get_board_state()
     initial_md = game.get_board_markdown()

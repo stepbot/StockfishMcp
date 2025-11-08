@@ -5,6 +5,7 @@ from stockfish import Stockfish
 class ChessGame:
     def __init__(self, stockfish_path, skill_level=10):
         self.board = chess.Board()
+        self.stockfish_path = stockfish_path
         self.skill_level = skill_level
         self.engine_color = random.choice([chess.WHITE, chess.BLACK])
         self.moves = []
