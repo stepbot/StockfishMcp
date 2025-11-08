@@ -9,7 +9,23 @@ This project implements a simple MCP (Model Context Protocol) server that allows
 - Make moves using UCI notation.
 - Reset the game with a specific skill level for the engine.
 
-## Setup
+## Installation from Registry
+
+You can install and run this server directly from the MCP registry using an MCP-compatible client. Update your `mcp_settings.json` to include the following server configuration:
+
+```json
+{
+  "mcpServers": {
+    "chess": {
+      "package": "io.github.stepbot/stockfish-mcp@v0.1.3"
+    }
+  }
+}
+```
+
+Your client will automatically download and manage the server package.
+
+## Local Development Setup
 
 1.  **Clone the repository:**
     ```bash
