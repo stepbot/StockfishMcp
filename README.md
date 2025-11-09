@@ -1,58 +1,29 @@
 # Stockfish MCP Server
 
-This project implements a simple MCP (Model Context Protocol) server that allows an LLM to play chess against the Stockfish engine.
+<!-- mcp-name: io.github.stepbot/stockfish-mcp -->
 
-## Features
+A Stockfish server for the Model Context Protocol. This package allows a Large Language Model to play chess against the Stockfish engine.
 
-- Play a game of chess against Stockfish.
-- Get the board state in FEN and Markdown format.
-- Make moves using UCI notation.
-- Reset the game with a specific skill level for the engine.
+## Installation
 
-## Installation from Registry
+Install the package from PyPI:
 
-You can install and run this server directly from the MCP registry using an MCP-compatible client. Update your `mcp_settings.json` to include the following server configuration:
-
-```json
-{
-  "mcpServers": {
-    "chess": {
-      "package": "io.github.stepbot/stockfish-mcp@v0.1.3"
-    }
-  }
-}
+```bash
+pip install stockfish-mcp
 ```
-
-Your client will automatically download and manage the server package.
-
-## Local Development Setup
-
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd StockfishMcp
-    ```
-
-2.  **Install `uv`:**
-    If you don't have `uv` installed, you can install it with:
-    ```powershell
-    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-    ```
-    After installation, you may need to add the installation directory (usually `C:\Users\<YourUser>\.local\bin` on Windows) to your system's PATH and restart your terminal.
-
-3.  **Download Stockfish:**
-    You need to download the Stockfish engine separately. You can find it on the [official Stockfish website](https://stockfishchess.org/download/).
-
-4.  **Configure the MCP Server:**
-    To use this server, you must add an entry for it in your global `mcp_settings.json` file. This file tells your MCP client how to launch the server.
-
-    An example configuration is provided in `mcp_settings.example.json`. You should copy this configuration into your `mcp_settings.json` file and update the following paths:
-    - The path to the `mcp_server.py` script in this project.
-    - The path to your downloaded Stockfish executable for the `--stockfish-path` argument.
 
 ## Usage
 
-The server is managed by your MCP client and will be launched using `uv`. `uv` will automatically handle the virtual environment and dependencies from `requirements.txt`. The MCP client will pass the `--stockfish-path` argument to the server on startup.
+Run the server from the command line:
+
+```bash
+stockfish-mcp
+```
+
+You can also provide a path to a custom Stockfish executable:
+
+```bash
+stockfish-mcp --stockfish-path /path/to/your/stockfish
 
 ## Example
 

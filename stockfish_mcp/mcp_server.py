@@ -1,6 +1,5 @@
-import argparse
 from fastmcp import FastMCP
-from chess_logic import ChessGame
+from .chess_logic import ChessGame
 
 mcp = FastMCP("chess")
 
@@ -65,11 +64,3 @@ def reset_game(skill_level: int = 10) -> str:
     moves = game.get_moves()
     moves_str = ", ".join(moves)
     return f"Game reset with skill level {skill_level}. Engine is playing as {engine_color}.\n\n**Initial board:**\nFEN: `{initial_state['fen']}`\n{initial_md}\n\nMoves: {moves_str}"
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the Chess MCP server.")
-    parser.add_argument("--stockfish-path", required=True, help="Path to the Stockfish executable.")
-    args = parser.parse_args()
-
-    game = ChessGame(stockfish_path=args.stockfish_path, skill_level=10)
-    mcp.run()
