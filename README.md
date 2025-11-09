@@ -6,24 +6,41 @@ A Stockfish server for the Model Context Protocol. This package allows a Large L
 
 ## Installation
 
-Install the package from PyPI:
+This package is a pure Python wrapper and requires you to provide your own Stockfish binary.
 
-```bash
-pip install stockfish-mcp
-```
+1.  **Download Stockfish:** Get the appropriate version for your system from the [official Stockfish website](https://stockfishchess.org/download/).
+
+2.  **Install the MCP Server:** We recommend using `uv` to install the package. First, [install `uv`](https://github.com/astral-sh/uv). Then, run the following command to install `stockfish-mcp` as a globally available command-line tool in its own isolated environment:
+    ```bash
+    uv tool install stockfish-mcp
+    ```
 
 ## Usage
 
-Run the server from the command line:
+There are two ways to run the server:
+
+### 1. Command Line
+
+You can run the server directly, providing the path to your downloaded Stockfish executable.
 
 ```bash
-stockfish-mcp
+uv tool run stockfish-mcp --stockfish-path C:\path\to\your\stockfish.exe
 ```
 
-You can also provide a path to a custom Stockfish executable:
+### 2. MCP Configuration
 
-```bash
-stockfish-mcp --stockfish-path /path/to/your/stockfish
+Alternatively, you can add it to your MCP `settings.json` file. This is useful for integrating with clients like the MCP VS Code extension.
+
+```json
+{
+    "mcpServers": {
+        "stockfish": {
+            "command": "uv",
+            "args": ["tool", "run", "stockfish-mcp", "--stockfish-path", "C:\\path\\to\\your\\stockfish.exe"]
+        }
+    }
+}
+```
 
 ## Example
 
