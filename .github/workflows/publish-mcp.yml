@@ -1,36 +1,76 @@
-name: Publish to MCP Registry
+name: Publish to PyPI and MCP Registry
 
 on:
   push:
     tags:
-      - 'v*' # Triggers on version tags like v1.0.0
+      - 'v*'
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      id-token: write # Required for OIDC authentication
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            cibw_build: "*-manylinux_x86_64"
+          - os: windows-latest
+            cibw_build: "*-win_amd64"
+          - os: macos-latest
+            cibw_build: "*-macosx_x86_64 *-macosx_arm64"
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Log in to the GitHub Container Registry
-        uses: docker/login-action@v2
+      - name: Set up Python
+        uses: actions/setup-python@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          python-version: '3.x'
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+      - name: Download Stockfish
+        run: |
+          mkdir -p stockfish_mcp/bin
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            curl -L "https://github.com/official-stockfish/Stockfish/releases/latest/download/stockfish-ubuntu-x86-64-avx2.tar" | tar -x -C stockfish_mcp/bin --strip-components=1
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            curl -L "https://github.com/official-stockfish/Stockfish/releases/latest/download/stockfish-windows-x86-64-avx2.zip" -o stockfish.zip
+            unzip stockfish.zip -d stockfish_mcp/bin
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            curl -L "https://github.com/official-stockfish/Stockfish/releases/latest/download/stockfish-macos-x86-64.tar" | tar -x -C stockfish_mcp/bin --strip-components=1
+          fi
+        shell: bash
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.16.2
+        env:
+          CIBW_BUILD: ${{ matrix.cibw_build }}
+
+      - name: Store wheel
+        uses: actions/upload-artifact@v4
         with:
-          context: .
-          push: true
-          tags: ghcr.io/stepbot/stockfish-mcp:${{ github.ref_name }}
-          labels: io.modelcontextprotocol.server.name=io.github.stepbot/stockfish-mcp
+          path: ./wheelhouse/*.whl
+
+  publish:
+    name: Publish to PyPI and MCP Registry
+    needs: build_wheels
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download all wheels
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
       - name: Install MCP Publisher
         run: |
