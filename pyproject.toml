@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0", "cibuildwheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -27,4 +27,3 @@ stockfish-mcp = "stockfish_mcp.__main__:main"
 
 [tool.setuptools.packages.find]
 namespaces = true
-
