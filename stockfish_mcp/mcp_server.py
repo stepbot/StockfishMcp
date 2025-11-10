@@ -1,9 +1,9 @@
 from fastmcp import FastMCP
 from .chess_logic import ChessGame
 
-mcp = FastMCP("chess")
+mcp = FastMCP("stockfish")
 
-# Global game state will be initialized in the main block
+# Global game state will be initialized in the main entrypoint
 game = None
 
 @mcp.tool
@@ -54,10 +54,8 @@ def reset_game(skill_level: int = 10) -> str:
     The engine will be randomly assigned White or Black.
     Returns the initial board state.
     """
-    global game
-    # The stockfish path is now part of the game instance
-    stockfish_path = game.stockfish_path
-    game = ChessGame(stockfish_path=stockfish_path, skill_level=skill_level)
+    game.reset_game()
+    game.stockfish.set_skill_level(skill_level)
     initial_state = game.get_board_state()
     initial_md = game.get_board_markdown()
     engine_color = "White" if game.engine_color == 1 else "Black"

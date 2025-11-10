@@ -92,9 +92,12 @@ class ChessGame:
         return "Game in progress"
 
     def reset_game(self):
-        """Resets the board to the starting position."""
+        """Resets the board to the starting position and re-randomizes the engine color."""
         self.board.reset()
         self.moves = []
+        self.engine_color = random.choice([chess.WHITE, chess.BLACK])
+        if self.engine_color == chess.WHITE:
+            self.make_engine_move_internal()
 
     def get_moves(self):
         """Returns the list of moves made so far."""
