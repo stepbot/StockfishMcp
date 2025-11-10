@@ -3,8 +3,9 @@ from .chess_logic import ChessGame
 
 mcp = FastMCP("stockfish")
 
-# Global game state will be initialized in the main entrypoint
+# Global game state
 game = None
+STOCKFISH_PATH = None
 
 @mcp.tool
 def get_board_state() -> str:
@@ -54,11 +55,14 @@ def reset_game(skill_level: int = 10) -> str:
     The engine will be randomly assigned White or Black.
     Returns the initial board state.
     """
-    game.reset_game()
-    game.stockfish.set_skill_level(skill_level)
+    global game
+    if not STOCKFISH_PATH:
+        return "Error: Stockfish path not configured. The server must be started with the --stockfish-path argument."
+    
+    game = ChessGame(stockfish_path=STOCKFISH_PATH, skill_level=skill_level)
     initial_state = game.get_board_state()
     initial_md = game.get_board_markdown()
-    engine_color = "White" if game.engine_color == 1 else "Black"
+    engine_color = "White" if game.engine_color == chess.WHITE else "Black"
     moves = game.get_moves()
     moves_str = ", ".join(moves)
     return f"Game reset with skill level {skill_level}. Engine is playing as {engine_color}.\n\n**Initial board:**\nFEN: `{initial_state['fen']}`\n{initial_md}\n\nMoves: {moves_str}"

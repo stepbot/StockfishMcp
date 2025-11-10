@@ -17,6 +17,8 @@ def main():
     if not stockfish_path:
         parser.error("Stockfish executable not found. Please install Stockfish and ensure it is in your PATH, or provide the path using the --stockfish-path argument.")
 
+    mcp_server.STOCKFISH_PATH = stockfish_path
+    # Initialize the first game
     mcp_server.game = ChessGame(stockfish_path=stockfish_path, skill_level=10)
     mcp_server.mcp.run()
 
